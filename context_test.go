@@ -121,3 +121,18 @@ func TestContextWithTimeout(t *testing.T) {
 
 	fmt.Println("Total Goroutines:", runtime.NumGoroutine())
 }
+
+func TestContextWithDeadline(t *testing.T) {
+	fmt.Println("Total Goroutines:", runtime.NumGoroutine())
+
+	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(5*time.Second))
+	defer cancel()
+
+	destination := CreateCounter(ctx)
+	fmt.Println("Total Goroutines:", runtime.NumGoroutine())
+	for n := range destination {
+		fmt.Println("Counter:", n)
+	}
+
+	fmt.Println("Total Goroutines:", runtime.NumGoroutine())
+}
